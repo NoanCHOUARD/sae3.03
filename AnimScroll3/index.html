@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Scroll-driven Animations: Horizontal Scrolling Section with
+      <code>view-timeline</code>
+    </title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      @supports (animation-timeline: view()) {
+        @keyframes move {
+          to {
+            /* Move horizontally so that right edge is aligned against the viewport */
+            transform: translateX(calc(-100% + 100vw));
+            left: 0px;
+          }
+        }
+        @keyframes moveRev {
+          to {
+            transform: translateX(calc(100% + 100vw));
+          }
+        }
+
+        #sectionPin {
+          /* Stretch it out, so that we create room for the horizontal scroll animation */
+          height: 500vh;
+          overflow: visible; /* To make position sticky work … */
+
+          view-timeline-name: --section-pin-tl;
+          view-timeline-axis: block;
+        }
+
+        .pin-wrap-sticky {
+          /* Stick to Top */
+          height: 100vh;
+          width: 100vw;
+          position: sticky;
+          top: 0;
+
+          width: 100vw;
+          overflow-x: hidden;
+        }
+
+        .pin-wrap {
+          height: 100vh;
+          width: 250vmax;
+          position: relative;
+
+          /* Hook animation */
+          will-change: transform;
+          animation: linear move forwards;
+
+          /* Link animation to view-timeline */
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+
+        .h2 {
+          will-change: transform;
+          animation: linear moveRev forwards;
+
+          position: absolute;
+          left: 0px;
+
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <div class="container">
+      <section data-bgcolor="#bcb8ad" data-textcolor="#032f35">
+        <div>
+          <h1>
+            <span>Horizontal</span> <span>scroll</span> <span>section</span>
+          </h1>
+          <p>With CSS view-timeline</p>
+        </div>
+      </section>
+
+
+      
+      <section id="sectionPin">
+        <div class="pin-wrap-sticky">
+          <div class="pin-wrap">
+            <h2 class="h2">
+              <div class="second-section">
+                <lottie-player
+                id="firstLottie"
+                src="Animation - 1702630409859.json"
+                >
+                </lottie-player>
+              </div>
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      <section data-bgcolor="#e3857a" data-textcolor="#f1dba7">
+        <img src="4.jpg" alt="" />
+        <h2 class="credit">
+          Created by
+          <a
+            href="https://twitter.com/bramus"
+            target="_top"
+            rel="noreferrer noopener"
+            >Bramus</a
+          >.<br /><br />Adapted from
+          <a href="https://codepen.io/cameronknight/pen/qBNvrRQ" target="_top"
+            >the original by Cameron Knight</a
+          >.
+        </h2>
+      </section>
+    </div>
+  </body>
+</html>
