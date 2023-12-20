@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.responsive-circle{
+    margin: 0.5rem;
+    width: calc(15vw / 6);
+    height: calc(15vw / 6);
+    background-color: #9DD8F7;
+    border-radius: 100%;
+    float: left;
+}
+
+@layer{
+
+    :root{
+            
+ 
+
+    }
+
+}
