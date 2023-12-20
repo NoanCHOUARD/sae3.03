@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/dist/output.css" rel="stylesheet">
+    <script src="carte.js"></script>
+</head>
+
+<body class="bg-pink-900 w-screen">
+    <img src="/assets/MAPBG.png" alt="" class="absolute w-full z-10 bg-contain">
+
+    <svg class="absolute z-20 fill-transparent" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 1080"
+        style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+        <g id="MAP-PLANE" onclick="popUpAvion()">
+            <path class="cursor-pointer hover:fill-fondlight" d="M801,1069.6l185.5-107.1l-1.3-38.7c-0.2,0.2,21.6-43.7,21.6-43.7l3.2-17.9l-105.7-61.1l-3.7,2.1l-14.8-8.2l-122.7,70.8
+		v11.8l-3.9,7.3l-45.5,26.3l0.1-22.8l3.9-2.3l0.2-12.9l-4.2-2.3l10.5-15.1l6.1-3.3l0.3-8.2l-3.9-2.3l0.3-16.3l1.2-0.7l0.4-7.9
+		l-6.8-7.7l-36.2-20.6v-5c0,0,5.4-3.6,17.9-4.7l-0.1-25l-0.3-0.9c0,0-26.9,1.8-33.5,19.3l0.1,24.4l-21.6,12.5l-7.2,7.7l-0.3,7.9
+		l1.6,1.6l-0.1,15.8l-3.3,1.9l-0.3,8.2l7.1,4.1l8.5,15.1l-2.6,1.5l-0.3,12.9l4.4,2.5l-0.2,127.4l29.1,16.8l29-16.8l0.2-38.2l5.1,6.6
+		l-1.6,37.2L801,1069.6z" />
+        </g>
+        <g id="MAP-CAR" onclick="popUpVoiture()">
+            <polygon class="cursor-pointer hover:fill-fondlight" points="1130.6,921.5 1370.9,781.6 1330.3,758.8 1330.3,748.1 1367.4,726.4 1367.4,723.6 1263,663.3 1245.1,673.7 
+		1245.2,659.7 1251.3,656.2 1251.3,646.5 1179.4,605 1031.6,690.9 1031.5,700.6 1037.8,703.1 1037.8,750 940.8,809.1 	" />
+        </g>
+        <g id="MAP-BICYCLE" onclick="popUpVelo()">
+            <path class="cursor-pointer hover:fill-fondlight"
+                d="M1452.1,426.6l38-22.8l-1.3-0.9c-0.8-1.1,0.5-1.1,0.5-1.1l1.9,1.1l14.5-8.5l311.2,173.1l-53.6,32.2L1452.1,426.6z" />
+        </g>
+        <g id="MAP-TRAIN" onclick="popUpTrain()">
+            <path class="cursor-pointer hover:fill-fondlight" d="M835.4-0.2l432.3,0.6l257.7,148c0,0,39.2,16.7,39.5,75.4c0,0-2.1,8.6-13,10.9l368,213.5v34.4L1249.8,94.5l6,10.3v2.1
+		l-4.4,2.9l-0.4,97.3l-7.7,4.2l-2.3,7.7l-19.3,11.8l-9.1-2l-14.9,8.9l-24.5-14l-2.1,1l-38-21.9v-2.2l-19.2-11.1L1099,198l-9.2,1.9
+		l-19.1-11l-2.6-8.7l-1.4,0.8l-57.3-33.1l-0.2-1.5l-8.8,1.9l-19.5-11.1l-2.2-8.5l-1.5,0.8l-57.3-33.1l0.1-1l-9.1,2l-19.5-11
+		l-2.2-8.6V63.4L852.1,42v-2.5l-16.7-9.6V-0.2z" />
+        </g>
+        <g id="MAP-BOAT " onclick="popUpBateau()">
+            <polygon class="cursor-pointer hover:fill-fondlight"
+                points="-1.1,0.4 1,569.6 812.4,126 734.1,75 733.4,57.6 735.3,56.9 735.8,53.8 643.8,0.3 	" />
+        </g>
+    </svg>
+
+    <div id="velo" class="absolute z-0 w-full h-full bg-fond flex items-center justify-center overflow-y-hidden">
+        <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150 overflow-hidden">
+            <div class="p-8 flex flex-col justify-center">
+                <img class="m-8 scale-125" src="/assets/velo.png" alt="">
+                <p class="text-3xl font-bold">14 555 587</p>
+                <p class="text-3xl font-bold">personnes / jour</p>
+            </div>
+            <svg onclick="closePopUpVelo()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="cursor-pointer"
+                    d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                    fill="#EC1C24" />
+            </svg>
+        </div>
+    </div>
+
+
+    <div id="avion" class="absolute z-0 w-full h-full bg-fond flex items-center justify-center">
+        <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+            <div class="p-8 flex flex-col justify-center">
+                <img class="m-8 scale-125" src="/assets/avion.png" alt="">
+                <p class="text-3xl font-bold">14 555 587</p>
+                <p class="text-3xl font-bold">personnes / jour</p>
+            </div>
+            <svg onclick="closePopUpAvion()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="cursor-pointer"
+                    d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                    fill="#EC1C24" />
+            </svg>
+        </div>
+    </div>
+
+
+    <div id="train" class="absolute z-0 w-full h-full bg-fond flex items-center justify-center">
+        <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+            <div class="p-8 flex flex-col justify-center">
+                <img class="m-8 scale-125" src="/assets/train.png" alt="">
+                <p class="text-3xl font-bold">14 555 587</p>
+                <p class="text-3xl font-bold">personnes / jour</p>
+            </div>
+            <svg onclick="closePopUpTrain()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="cursor-pointer"
+                    d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                    fill="#EC1C24" />
+            </svg>
+        </div>
+    </div>
+
+    <div id="bateau" class="absolute z-0 w-full h-full bg-fond flex items-center justify-center">
+        <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+            <div class="p-8 flex flex-col justify-center">
+                <img class="m-8 scale-125" src="/assets/bateau.png" alt="">
+                <p class="text-3xl font-bold">14 555 587</p>
+                <p class="text-3xl font-bold">personnes / jour</p>
+            </div>
+            <svg onclick="closePopUpBateau()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="cursor-pointer"
+                    d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                    fill="#EC1C24" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Voiture -->
+    <div id="voiture" class="absolute z-0 w-full h-full bg-fond flex items-center justify-center">
+        <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+            <div class="p-8 flex flex-col justify-center">
+                <img class="m-8 scale-125" src="/assets/voiture.png" alt="">
+                <p class="text-3xl font-bold">14 555 587</p>
+                <p class="text-3xl font-bold">personnes / jour</p>
+            </div>
+            <svg onclick="closePopUpVoiture()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="cursor-pointer"
+                    d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                    fill="#EC1C24" />
+            </svg>
+        </div>
+    </div>
+
+</body>
+
+</html>
