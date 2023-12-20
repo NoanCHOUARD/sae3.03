@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Scroll-driven Animations: Horizontal Scrolling Section with
+      <code>view-timeline</code>
+    </title>
+
+    <link rel="stylesheet" href="/dist/output.css" />
+
+    <style>
+      @supports (animation-timeline: view()) {
+        @keyframes move {
+          to {
+            /* Move horizontally so that right edge is aligned against the viewport */
+            transform: translateX(calc(-100% + 100vw));
+            left: 0px;
+          }
+        }
+        @keyframes moveRev {
+          to {
+            transform: translateX(calc(100% + 100vw));
+          }
+        }
+
+        #sectionPin {
+          /* Stretch it out, so that we create room for the horizontal scroll animation */
+          height: 1500vh;
+          overflow: visible; /* To make position sticky work … */
+
+          view-timeline-name: --section-pin-tl;
+          view-timeline-axis: block;
+        }
+
+        .pin-wrap-sticky {
+          /* Stick to Top */
+          height: 100vh;
+          width: 100vw;
+          position: sticky;
+          top: 0;
+
+          width: 100vw;
+          overflow-x: hidden;
+        }
+
+        .pin-wrap {
+          height: 100vh;
+          width: 1000vmax;
+          position: relative;
+
+          /* Hook animation */
+          will-change: transform;
+          animation: linear move forwards;
+
+          /* Link animation to view-timeline */
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+
+        .h2 {
+          will-change: transform;
+          animation: linear moveRev forwards;
+
+          position: absolute;
+          left: 0px;
+
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+
+        .select--active {
+          border: 4px solid rgb(55, 0, 255);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <div class="container">
+      <section data-bgcolor="#bcb8ad" data-textcolor="#032f35">
+        <div>
+          <h1>
+            <span>Horizontal</span> <span>scroll</span> <span>section</span>
+          </h1>
+          <p>With CSS view-timeline</p>
+        </div>
+      </section>
+
+      <section id="sectionPin">
+        <div class="pin-wrap-sticky">
+          <div class="pin-wrap">
+            <!-- <h2 class="h2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+                            style="width: auto; height: 50px; margin-left: 50rem; scale: 2;"
+
+            </h2> -->
+            <lottie-player
+              src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+              src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+              src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+            src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+            speed="1"
+            class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+            src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+            speed="1"
+            class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+            src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+            speed="1"
+            class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+            src="https://lottie.host/caa22176-3ae0-4c99-b60f-de26d8b18bdc/vigSpLNvFF.json"
+            speed="1"
+            class="select lotplay"
+            ></lottie-player>
+          </div>
+        </div>
+      </section>
+
+      <section data-bgcolor="#e3857a" data-textcolor="#f1dba7">
+        <img src="4.jpg" alt="" />
+        <h2 class="credit">
+          Created by
+          <a
+            href="https://twitter.com/bramus"
+            target="_top"
+            rel="noreferrer noopener"
+            >Bramus</a
+          >.<br /><br />Adapted from
+          <a href="https://codepen.io/cameronknight/pen/qBNvrRQ" target="_top"
+            >the original by Cameron Knight</a
+          >.
+        </h2>
+      </section>
+    </div>
+
+    <script>
+      let selects = document.querySelectorAll(".select");
+      let anim = document.querySelector("#anim");
+
+      const option = {
+        /*
+            L'élément qui est utilisé comme zone d'affichage au moment d'évaluer la visibilité de la cible. 
+            Il doit être un ancêtre de la cible. S'il n'est pas spécifié ou s'il prend la valeur null, 
+            sa valeur par défaut est la zone d'affichage (le viewport) du navigateur. C'est le cas ici */
+        root: null,
+        /*
+            Cet ensemble de valeur sert à agrandir ou à réduire chaque coté du cadre délimitant l'élément racine avant 
+            d'évaluer les intersections.
+            */
+        rootMargin: "0px 0px 0px 0px",
+        /*
+                Le degré d'intersection entre l'élément cible et sa racine est le ratio d'intersection. 
+                C'est une représentation du pourcentage de l'élément cible qui est visible, exprimée sous 
+                la forme d'un nombre compris entre 0.0 et 1.0.
+            */
+        threshold: 1,
+      };
+
+      /*
+            Création d'un observer
+            const observer = new IntersectionObserver (callback, option)
+        */
+
+      const observer = new IntersectionObserver(function (entries, observer) {
+        /*
+            Chaque élément de entries correspond à une variation
+            d'intersection pour un des éléments cible
+        */
+        entries.forEach((entry) => {
+          console.log(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            // entry.target est l'élément cible
+            //entry.target.classList.add("select--active");
+            entry.target.play();
+          } else {
+            //entry.target.classList.remove("select--active");
+            //entry.target.pause();
+            //console.log(entry.target);
+          }
+          // if (entry.isIntersecting) {
+          //   // suprime la classe si il y a une intersection entre le viewport et la secion--one
+          // } else {
+          //   // Ajoute la classe si il y a une intersection entre le viewport et la secion--one
+          // }
+        });
+      }, option);
+
+      // On lance l'observation
+
+      selects.forEach((select) => {
+        observer.observe(select);
+      });
+    </script>
+  </body>
+</html>
