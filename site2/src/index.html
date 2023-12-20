@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Scroll-driven Animations: Horizontal Scrolling Section with
+      <code>view-timeline</code>
+    </title>
+
+    <link rel="stylesheet" href="/dist/output.css" />
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+
+    <style>
+      @supports (animation-timeline: view()) {
+        @keyframes move {
+          to {
+            /* Move horizontally so that right edge is aligned against the viewport */
+            transform: translateX(calc(-100% + 100vw));
+            left: 0px;
+          }
+        }
+        @keyframes moveRev {
+          to {
+            transform: translateX(calc(100% + 100vw));
+          }
+        }
+
+        #sectionPin {
+          /* Stretch it out, so that we create room for the horizontal scroll animation */
+          height: 500vh;
+          overflow: visible; /* To make position sticky work … */
+
+          view-timeline-name: --section-pin-tl;
+          view-timeline-axis: block;
+        }
+
+        .pin-wrap-sticky {
+          /* Stick to Top */
+          height: 100vh;
+          width: 200vw;
+          position: sticky;
+          top: 0;
+
+          width: 100vw;
+        }
+
+        .pin-wrap {
+          height: 100vh;
+          width: 250vmax;
+          position: relative;
+
+          /* Hook animation */
+          will-change: transform;
+          animation: linear move forwards;
+
+          /* Link animation to view-timeline */
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+
+        .h2 {
+          will-change: transform;
+          animation: linear moveRev forwards;
+
+          position: absolute;
+          left: 0px;
+
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <nav class="w-full h-auto flex bg-red-600">
+      <a class="w-full h-auto block" href="https://www.ademe.fr/">
+        <img
+          src="../assets/logo-ademe.jpg"
+          alt="Logo ADEME"
+          class="w-28 block h-full p-5 hover:scale-125 ease-in-out duration-300"
+        />
+      </a>
+    </nav>
+    <img src="/assets/bonhomme.png" alt="" />
+    <section class="relative">
+      <div class="pl-10 p-10">
+        <h1
+          class="w-max h-auto font-overlock sm:text-lg md:text-xl lg:text-xl font-black pb-8"
+        >
+          Quels carburants à privilégier ?
+        </h1>
+
+        <p
+          class="font-overlock text-base md:text-lg lg:text-lg font-bold w-full h-auto"
+        >
+          A votre avis, quel est le carburants le moins polluant pour éviter
+          trop de pollution :
+        </p>
+      </div>
+
+      <div class="flex justify-normal items-center msw-screen h-auto z-0">
+        <div
+          class="w-max h-auto absolute opacity-0 md:relative lg:relative md:opacity-100 lg:opacity-100 right-0 bottom-0"
+        >
+          <img
+            src="../assets/Cars oil.svg"
+            alt="Voiture de Steve"
+            class="w-max h-auto"
+          />
+        </div>
+
+        <div
+          class="w-50 h-auto md:w-max md:h-auto lg:w-max lg:h-auto relative right-0 md:right-1/4 lg:right-56 bottom-0"
+        >
+          <img
+            src="../assets/Borne à essence.svg"
+            alt="Borne à essence"
+            class="w-max h-auto"
+          />
+          <div
+            class="w-max h-max space absolute scale-150 right-52 bottom-0 md:right-72 md:bottom-20 md:scale-90 lg:right-1/4 lg:bottom-1/3 lg:scale-125 grid grid-rows-4 lg:grid-rows-1"
+          >
+            <ul class="font-overlock font-black lg:text-lg text-yellowbg">
+              <li class="flex justify-center items-center text-center">
+                <p>Essence</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                ></div>
+              </li>
+
+              <li class="flex justify-center items-center text-center">
+                <p>Essence</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                ></div>
+              </li>
+
+              <li class="flex justify-center items-center text-center">
+                <p>Essence</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                ></div>
+              </li>
+
+              <li class="flex justify-center items-center text-center">
+                <p>Essence</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                ></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bg-bluebg w-screen [transform:rotateY(180deg)] p-0 m-0">
+      <!-- div à modifier si besoin -->
+      <div class="bg-greenbg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-greenbg rotat"></path>
+      </svg>
+      <!-- div à modifier si besoin -->
+      <div class="bg-bluebg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+    </div>
+
+
+    <section id="container" class="bg-greendarkbg w-screen m-0 p-0">
+      <lottie-player
+        id="anim1"
+        src="https://lottie.host/2b8cf8df-2a60-4afb-b1e5-3cf32b4de242/WuBJW96LEz.json"
+      >
+      </lottie-player>
+
+      <script>
+        LottieInteractivity.create({
+          player: "#anim1",
+          mode: "cursor",
+          actions: [
+            {
+              position: { x: [0, 1], y: [-1, 2] },
+              type: "seek",
+              frames: [0, 120],
+            },
+          ],
+        });
+      </script>
+    </section>
+
+
+
+    <div class="bg-redbg w-screen p-0 m-0">
+        <!-- div à modifier si besoin -->
+        <div class="bg-greendarkbg w-screen h-20"></div>
+        <!-- fin de la div à modifier si besoin -->
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-greendarkbg"></path>
+        </svg>
+        <!-- div à modifier si besoin -->
+        <div class="bg-redbg w-screen h-20"></div>
+        <!-- fin de la div à modifier si besoin -->
+    </div>
+
+    <div class="container bg-redbg">
+      <section id="sectionPin">
+        <div class="pin-wrap-sticky">
+          <div class="pin-wrap">
+            <!-- <h2 class="h2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </h2> -->
+            <lottie-player
+              src="https://lottie.host/f015b6dd-c669-4f47-90bc-f726cd62300b/30dpWc50rw.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+              src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+              src="https://lottie.host/9be57f96-44e6-4133-8161-211f7bb1ac03/yQOSPhqyDx.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      let selects = document.querySelectorAll(".select");
+      const option = {
+        /*
+            L'élément qui est utilisé comme zone d'affichage au moment d'évaluer la visibilité de la cible. 
+            Il doit être un ancêtre de la cible. S'il n'est pas spécifié ou s'il prend la valeur null, 
+            sa valeur par défaut est la zone d'affichage (le viewport) du navigateur. C'est le cas ici */
+        root: null,
+        /*
+            Cet ensemble de valeur sert à agrandir ou à réduire chaque coté du cadre délimitant l'élément racine avant 
+            d'évaluer les intersections.
+            */
+        rootMargin: "0px 0px 0px 0px",
+        /*
+                Le degré d'intersection entre l'élément cible et sa racine est le ratio d'intersection. 
+                C'est une représentation du pourcentage de l'élément cible qui est visible, exprimée sous 
+                la forme d'un nombre compris entre 0.0 et 1.0.
+            */
+        threshold: 0.7,
+      };
+
+      /*
+            Création d'un observer
+            const observer = new IntersectionObserver (callback, option)
+        */
+
+      const observer = new IntersectionObserver(function (entries, observer) {
+        /*
+            Chaque élément de entries correspond à une variation
+            d'intersection pour un des éléments cible
+        */
+        entries.forEach((entry) => {
+          console.log(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            // entry.target est l'élément cible
+            entry.target.play();
+          } else {
+            //entry.target.classList.remove("select--active");
+          }
+          // if (entry.isIntersecting) {
+          //   // suprime la classe si il y a une intersection entre le viewport et la secion--one
+          // } else {
+          //   // Ajoute la classe si il y a une intersection entre le viewport et la secion--one
+          // }
+        });
+      }, option);
+
+      // On lance l'observation
+
+      selects.forEach((select) => {
+        observer.observe(select);
+      });
+    </script>
+
+    <div class="bg-bluebg w-screen [transform:rotateY(180deg)] p-0 m-0">
+      <!-- div à modifier si besoin -->
+      <div class="bg-redbg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-redbg rotat"></path>
+      </svg>
+      <!-- div à modifier si besoin -->
+      <div class="bg-bluebg w-screen h-20"></div>
+    </div>
+
+    <section class="bg-bluebg p-0 m-0 flex flex-col justify-center items-center">
+
+      <p class="p-0">bonjour j'aime les patates</p>
+
+      <lottie-player
+        src="https://lottie.host/c368442e-3810-4b03-a900-f0bcfa64386d/hm4GojYkgK.json"
+        background="#9DD8F7"
+        speed="1"
+        loop
+        autoplay
+        class="w-screen"
+      ></lottie-player>
+    </section>
+  </body>
+</html>
