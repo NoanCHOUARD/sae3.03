@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Scroll-driven Animations: Horizontal Scrolling Section with
+      <code>view-timeline</code>
+    </title>
+
+    <link rel="stylesheet" href="../dist/output.css" />
+    <script src="script.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+      @supports (animation-timeline: view()) {
+        @keyframes move {
+          to {
+            /* Move horizontally so that right edge is aligned against the viewport */
+            transform: translateX(calc(-100% + 100vw));
+            left: 0px;
+          }
+        }
+        @keyframes moveRev {
+          to {
+            transform: translateX(calc(100% + 100vw));
+          }
+        }
+
+        #sectionPin {
+          /* Stretch it out, so that we create room for the horizontal scroll animation */
+          height: 500vh;
+          overflow: visible; /* To make position sticky work … */
+
+          view-timeline-name: --section-pin-tl;
+          view-timeline-axis: block;
+        }
+
+        .pin-wrap-sticky {
+          /* Stick to Top */
+          height: 100vh;
+          width: 200vw;
+          position: sticky;
+          top: 0;
+
+          width: 100vw;
+        }
+
+        .pin-wrap {
+          height: 100vh;
+          width: 250vmax;
+          position: relative;
+
+          /* Hook animation */
+          will-change: transform;
+          animation: linear move forwards;
+
+          /* Link animation to view-timeline */
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+
+        .h2 {
+          will-change: transform;
+          animation: linear moveRev forwards;
+
+          position: absolute;
+          left: 0px;
+
+          animation-timeline: --section-pin-tl;
+          animation-range: contain 0% contain 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="font-overlock">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <div  class="w-screen bg-bluebg pt-10">
+      <p class="text-center font-bold md:text-3xl text-xs font-bold ">
+       Se d&eacute;placer c&#39est bien&#44; mais sans polluer,<span class="uppercase"> c&#39est mieux ! </span><br> 
+        Quel moyen de transport utiliser en limitant sa pollution ?
+
+      </p>
+        <img src="../assets/introduction.png" alt="" class="w-screen bg-bluebg pt-16"/>
+    </div>
+
+    <div class="bg-yellowbg my-50 h-56 w-screen flex flex-col justify-center items-center">
+      <p class="md:text-3xl text-xs font-bold ">Carte des moyens de transport utilis&eacute; quotidien par les fran&ccedil;ais.</p>
+	<div class="flex items-center">
+ 	<p class="md:text-xl text-xs p-8">Survolez les zones et cliquez</p>
+	<svg width="48" height="48" viewBox="0 0 73 73" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path d="M36.5 6.50684V18.5068" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M33.5 33.5068L63.5 39.5068L54.5 45.5068L63.5 54.5068L54.5 63.5068L45.5 54.5068L39.5 63.5068L33.5 33.5068Z" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M57.713 15.2939L49.2275 23.7794M15.287 57.7199L23.7725 49.2344M6.5 36.5069H18.5M15.287 15.2939L23.7725 23.7794" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+	
+    </div>
+     
+    </div>
+
+    <section class="relative h-screen m-0 bg-yellowbg py-56">
+      <img src="../assets/MAPBG.png" alt="" class="absolute w-full z-10 bg-contain ">
+
+      <svg class="absolute z-20 fill-transparent" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1920 1080"
+          style="enable-background:new 0 0 1920 1080;" xml:space="preserve">
+          <g onclick="popUpBateau()" id="MAP-BATEAU" onclick="popUpAvion()">
+              <polygon class="cursor-pointer hover:fill-fondlight" points="647.4,209.3 762.9,142.2 762.9,114.3 764.5,113.4 764.9,111.3 733.2,85.8 733.4,57.6 735.3,56.9 735.8,53.8 
+      643.2,0 618,0 582.8,0 563.5,6.8 506.8,52.3 507.3,54.8 509.2,55.9 509.3,89.7 556,116.8 542.6,124.5 542.7,127 545.4,128.6 
+      545.4,146.5 602.5,179.7 602.5,183.3 	" />
+          </g>
+          <g onclick="popUpVoiture()" id="MAP-VOITURE">
+              <polygon class="cursor-pointer hover:fill-fondlight" points="1130.6,921.5 1370.9,781.6 1330.3,758.8 1330.3,748.1 1367.4,726.4 1367.4,723.6 1263,663.3 1245.1,673.7 
+      1245.2,659.7 1251.3,656.2 1251.3,646.5 1179.4,605 1031.6,690.9 1031.5,700.6 1037.8,703.1 1037.8,750 940.8,809.1 	" />
+          </g>
+          <g onclick="popUpBus()" id="MAP-BUS">
+              <path class="cursor-pointer hover:fill-fondlight" d="M1144,560.2l4.6-2.8v-7.5l-2.9-1.7l0-47l-0.4-0.2c0,0-0.4-4-2.5-5.5c-3.9-2.6-76.6-44.2-76.6-44.2s-1.9-1.4-7.6,2.1
+      s-29.5,17-29.5,17s-6.7,4.1-7.4,14.3l42.9,24.9l-0.1,4.5l5.7,3.3l4-2.4l10.7,6.2l0,4.6l1.5,0.8l1.1-0.6l0.1-3.3l10.2,5.9l1.2-0.7
+      l15.4,9l0,6l1.5,0.7l1.1-0.6l0-5.9l5-2.8l0.1,4.1l1.5,0.8l1.1-0.6v-7.4l-22.1-12.8c0,0,2.2-2.4,4.9-4s22.9-13.3,22.9-13.3l11,6.4
+      v39.8l-2.9,1.9v7.5L1144,560.2z" />
+          </g>
+          <g onclick="popUpVelo()" id="MAP-VELO">
+              <path class="cursor-pointer hover:fill-fondlight"
+                  d="M1452.1,426.6l38-22.8l-1.3-0.9c-0.8-1.1,0.5-1.1,0.5-1.1l1.9,1.1l14.5-8.5l311.2,173.1l-53.6,32.2L1452.1,426.6z" />
+          </g>
+          <g onclick="popUpAvion()" id="MAP-AVION">
+              <path class="cursor-pointer hover:fill-fondlight" d="M801,1069.6l185.5-107.1l-1.3-38.7c-0.2,0.2,21.6-43.7,21.6-43.7l3.2-17.9l-105.7-61.1l-3.7,2.1l-14.8-8.2l-122.7,70.8
+      v11.8l-3.9,7.3l-45.5,26.3l0.1-22.8l3.9-2.3l0.2-12.9l-4.2-2.3l10.5-15.1l6.1-3.3l0.3-8.2l-3.9-2.3l0.3-16.3l1.2-0.7l0.4-7.9
+      l-6.8-7.7l-36.2-20.6v-5c0,0,5.4-3.6,17.9-4.7l-0.1-25l-0.3-0.9c0,0-26.9,1.8-33.5,19.3l0.1,24.4l-21.6,12.5l-7.2,7.7l-0.3,7.9
+      l1.6,1.6l-0.1,15.8l-3.3,1.9l-0.3,8.2l7.1,4.1l8.5,15.1l-2.6,1.5l-0.3,12.9l4.4,2.5l-0.2,127.4l29.1,16.8l29-16.8l0.2-38.2l5.1,6.6
+      l-1.6,37.2L801,1069.6z" />
+          </g>
+          <g onclick="popUpTrain()" id="MAP-TRAIN1">
+              <path class="cursor-pointer hover:fill-fondlight" d="M1134,0l133.9-0.2l264,152.1c0,0,38.6,21.1,33,72.3c-0.8,7.5-10.1,13.6-40.4,9.1c0,0-25-6.7-34.7-14.1c0,0-0.1,2.4-0.9,3
+      s-3.2,1.9-3.2,1.9s-5,0.9-6.7-6.9c0,0-2.6,1.7-3.2,1.7c-1.6,0.9-8.6-5.1-5.7-11.3l-94.2-54.2c0,0,0.5,2.7-1.1,3.6
+      c-1.6,0.9-3,1.7-3,1.7s-3.6,2.2-6.6-6.8c0,0-1.4,0.7-2.7,1.3c-2.3,0.7-9.2-3.9-6.3-11.3l-7.6-4.4c0,0-0.3,3.6-0.8,3.5l-3.2,1.9
+      c0,0-5.6,1.2-7-6.8l-2.6,1.4c0,0-7.7,1.2-6.3-11.1l-4.3-2.6l-0.3-1.7l-1.8,0.7l-22-12.7c0,0-0.3,2-1.3,3c-1,1-2.8,1.6-2.8,1.6
+      s-3.8,1.3-6.7-6.9l-2.4,1.3c0,0-6.8,2.1-6.9-10.4l-84.9-49.3l3.8-2.3v-2l-65-37.5L1134,0z" />
+          </g>
+          <g onclick="popUpBateau()" id="MAP-BATEAU1">
+              <path class="cursor-pointer hover:fill-fondlight" d="M69.2,289.4l18.5,12.4c0,0,30.9,5.9,79.1-21s86-55.4,86.6-56.6s5.7-6.6,6.1-8.9c0.5-2.3,3-10.6,2.2-22
+      c0.3-12.4,0.1-17.4,0.1-17.4s0.6-4-8.1-8.4s-6.6-3.4-6.6-3.4l-0.4-7.7l-4-2.4l-1.5,0.9v-1.8l-4-2.4l-4.1,2.4v2.7l-2.5-1.5l-4,2.3
+      l0,15.1L221,169l-13.3,4.7l-3,4.6l-5.1,0.6v1.5L170.9,194l-0.1-0.8l-4-2.4l-4,2.3v2.9l-2.6-1.5l-4,2.3l0,4.6l-44.2,25l-8.6,19.4
+      c0,0-23.6,13.6-33,38.9L69.2,289.4z" />
+          </g>
+          <g onclick="popUpTrain()" id="MAP-TRAIN2">
+              <polygon class="cursor-pointer hover:fill-fondlight"
+                  points="889.2,63.6 852.1,42.4 852.1,39.5 835.4,29.9 835.4,0 1121.2,0 1198.9,45 1198.9,47 1192.4,50.7 1240.4,78.5 
+      1255.8,104.8 1255.8,106.9 1251,109.5 1251,207.1 1243.3,211.3 1240.8,219.8 1221.7,230.8 1212.6,228.8 1197.7,237.7 1173.2,223.7 
+      1171.1,224.7 1133.1,202.8 1133.1,200.7 1114.2,189.7 1099,198.1 1089.6,199.9 1070.7,188.9 1068.2,180.4 1066.8,181 1009.5,147.9 
+      1009.5,146.3 1000.4,148.3 981.2,137.2 978.7,128.7 977.3,129.6 920,96.5 920,95.4 910.9,97.4 891.7,86.3 889.2,77.8 	" />
+          </g>
+          <g onclick="popUpBateau()" id="MAP-BATEAU3">
+              <path class="cursor-pointer hover:fill-fondlight" d="M464,98.1l1.6-8.6l0.8-14.1l0.2-0.6c0,0-0.4-17.4,0-17.1c0.4,0.3-1.4-3.6-4.5-5.6l0-9.8c0,0,0-1.1-2-3.2l0-7.1
+      c0,0,0.1-3.1-6.9-6V20l-4-2.5l-1.5,0.9v-1.7l-4-2.4l-4,2.3v2.9l-2.6-1.5l-4,2.3l0,9.5L428,32l-1.1-0.5L414,37.2l-1.2,1.8l-6.9,3.3
+      v6.1l-41.8,20.4l-1.6-1l-19.2,10.3l-1.7,3.7l-5.6,3.6l-6.8,15.1l-12.5,7.9L308,128c0,0-26.2,13.5-34.2,43.5
+      c0,0,11.8,10.3,18.5,12.4s48.6-2.8,63.6-12.9c19.1-9.1,91.5-53.9,103.3-66" />
+          </g>
+      </svg>
+      </div>
+      </div>
+	
+
+          <div id="avion" class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/avion.png" alt="">
+                  <p class="text-3xl font-bold">1 900</p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpAvion()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+
+      <div id="velo" class="absolute z-0 w-full h-full flex items-center justify-center">
+          <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/velo.png" alt="">
+                  <p class="text-3xl font-bold">11 020 000 </p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpVelo()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+      </div>
+
+      <div id="bus" class="absolute z-0 w-full h-full flex items-center justify-center">
+          <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/bus.png" alt="">
+                  <p class="text-3xl font-bold">4 180 000</p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpBus()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+      </div>
+
+      <div id="train" class="absolute z-0 w-full h-full flex items-center justify-center">
+          <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/train.png" alt="">
+                  <p class="text-3xl font-bold">3 990 000</p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpTrain()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+      </div>
+
+      <div id="bateau" class="absolute z-0 w-full h-full flex items-center justify-center">
+          <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/bateau.png" alt="">
+                  <p class="text-3xl font-bold">190 000</p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpBateau()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+      </div>
+
+      <!-- Voiture -->
+      <div id="voiture" class="absolute z-0 w-full h-full flex items-center justify-center">
+          <div class="border-4 rounded-3xl border-black w-96 h-96 top-80 left-96 mx-96 bg-white flex scale-150">
+              <div class="p-8 flex flex-col justify-center">
+                  <img class="m-8 scale-125" src="../assets/voiture.png" alt="">
+                  <p class="text-3xl font-bold">13 680 000</p>
+                  <p class="text-3xl font-bold">personnes / jour</p>
+              </div>
+              <svg onclick="closePopUpVoiture()" class="w-8 absolute mx-4 right-0" width="65" height="65"
+                  viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path class="cursor-pointer"
+                      d="M50.6191 2.31577L32.0271 20.9088C25.8301 14.7138 19.6311 8.51277 13.4331 2.31577C6.26308 -4.85423 -4.85092 6.26377 2.31308 13.4358C8.51208 19.6288 14.7131 25.8308 20.9051 32.0278C14.7102 38.2276 8.51291 44.4249 2.31308 50.6198C-4.85092 57.7878 6.26408 68.9028 13.4331 61.7398C19.6301 55.5408 25.8291 49.3408 32.0261 43.1458L50.6181 61.7398C57.7881 68.9078 68.9051 57.7888 61.7381 50.6198C55.5391 44.4208 49.3421 38.2238 43.1411 32.0258C49.3411 25.8268 55.5381 19.6278 61.7381 13.4298C68.9061 6.26376 57.7891 -4.85423 50.6181 2.31977"
+                      fill="#EC1C24" />
+              </svg>
+          </div>
+      </div>
+    </section>
+
+    <div class="bg-yellowbg my-50 h-24 w-screen flex flex-col justify-center items-center">
+	
+    </div>
+
+
+    <div class="bg-greenbg w-full ">
+      <!-- div à modifier si besoin -->
+      <div class="bg-yellowbg w-full h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-yellowbg"></path>
+      </svg>
+      <!-- div à modifier si besoin -->
+      <div class="bg-greenbg w-full h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+    </div>
+
+    <div class="pl-10 p-10 bg-greenbg">
+      <h1
+        class="w-max h-auto font-overlock sm:text-lg md:text-xl lg:text-3xl font-black pb-8"
+      >
+        Quels carburants privil&eacutegier ?
+      </h1>
+
+      <p
+        class="font-overlock text-base md:text-lg lg:text-xl font-bold w-full h-auto"
+      >
+        A votre avis, quel est le carburants rejetant le moins de CO2 ?
+      </p>
+    </div>
+
+        <section class="bg-greenbg">
+      <div class="flex justify-normal items-center msw-screen h-auto z-0">
+        <div
+          class="w-max h-auto absolute opacity-0 md:relative lg:relative md:opacity-100 lg:opacity-100 right-0 bottom-0"
+        >
+          <img
+            src="../assets/Cars oil.svg"
+            alt="Voiture de Steve"
+            class="w-max h-auto"
+          />
+        </div>
+
+        <div
+          class="w-50 h-auto md:w-max md:h-auto lg:w-max lg:h-auto relative right-0 md:right-1/4 lg:right-56 bottom-0"
+        >
+          <img
+            src="../assets/borne.svg"
+            alt="Borne à essence"
+            class="w-96 h-auto"
+          />
+          <div
+            class="w-max h-max absolute scale-150 right-52 top-72 md:right-72 md:bottom-20 md:scale-90 lg:right-1/4 lg:bottom-1/3 lg:scale-125"
+          >
+            <ul class="font-overlock font-extrabold lg:text-lg text-yellowbg">
+              <li class="flex justify-end items-center text-center">
+                <p>Essence</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                  onclick="showEssence()"
+                ></div>
+              </li>
+
+              <li class="flex justify-end items-center text-center">
+                <p>Gasoil</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                  onclick="showGazoil()" 
+                ></div>
+              </li>
+
+              <li class="flex justify-end items-center text-center">
+                <p>E10</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                  onclick="showE10()"
+                ></div>
+              </li>
+
+              <li class="flex justify-end items-center text-center">
+                <p>E85</p>
+                <div
+                  class="responsive-circle hover:bg-redbg ease-in-out duration-200"
+                  onclick="showE85()" 
+                ></div>
+              </li>
+            </ul>
+          </div>
+          <img id="essence" class="opacity-0 absolute top-14 left-24 w-48" src="../assets/essence.png" alt="">
+          <img id="gazoil" class="opacity-0 absolute top-14 left-24 w-48" src="../assets/gazoil.png" alt="">
+          <img id="e10" class="opacity-0 absolute top-14 left-24 w-48" src="../assets/e10.png" alt="">
+          <img id="e85" class="opacity-0 absolute top-14 left-24 w-48" src="../assets/e85.png" alt="">
+        </div>
+      </div>
+    </section>
+
+    <div class="bg-bluebg w-screen [transform:rotateY(180deg)] p-0 m-0">
+      <!-- div à modifier si besoin -->
+      <div class="bg-greenbg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-greenbg rotat"></path>
+      </svg>
+      <!-- div à modifier si besoin -->
+      <div class="bg-bluebg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+    </div>
+
+    <div class="pl-10 p-10 bg-bluebg">
+      <h1
+        class="w-max h-auto font-overlock sm:text-lg md:text-xl lg:text-3xl font-black pb-8"
+      >
+        Quels sont les &eacutemissions polluantes ?
+      </h1>
+
+      <p
+        class="font-overlock text-base md:text-lg lg:text-xl font-bold w-full h-auto"
+      >
+        Les &eacutemissions des voitures sont l&#39une des choses &agrave surveiller quand on part en voyage !
+Quelles sont les statistiques actuelles et pour le futur ?
+      </p>
+    </div>
+
+    <section id="container" class="bg-greendarkbg w-screen m-0 p-0">
+      <lottie-player
+        id="anim1"
+        src="https://lottie.host/28e59249-4869-4db0-b70b-9be362e91b0f/4Oc6QqaibE.json"
+      >
+      </lottie-player>
+
+      <script>
+        LottieInteractivity.create({
+          player: "#anim1",
+          mode: "cursor",
+          actions: [
+            {
+              position: { x: [0, 1], y: [-1, 2] },
+              type: "seek",
+              frames: [0, 120],
+            },
+          ],
+        });
+      </script>
+    </section>
+
+
+
+    <div class="bg-redbg w-screen p-0 m-0">
+        <!-- div à modifier si besoin -->
+        <div class="bg-greendarkbg w-screen h-20"></div>
+        <!-- fin de la div à modifier si besoin -->
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-greendarkbg"></path>
+        </svg>
+        <!-- div à modifier si besoin -->
+        <div class="bg-redbg w-screen h-20"></div>
+        <!-- fin de la div à modifier si besoin -->
+    </div>
+
+    <div class="pl-10 p-10 bg-redbg">
+      <h1
+        class="w-max h-auto font-overlock sm:text-lg md:text-xl lg:text-3xl font-black pb-8"
+      >
+        Un autre transport ?
+      </h1>
+
+      <p
+        class="font-overlock text-base md:text-lg lg:text-xl font-bold w-full h-auto"
+      >
+        Certe, on peut utiliser la voiture pour voyager, mais ne serait-il pas mieux pour l&#39environnement de prendre un autre moyen de transport ?      
+	</p>
+    </div>
+
+
+    <div class="container bg-redbg">
+      <section id="sectionPin">
+        <div class="pin-wrap-sticky">
+          <div class="pin-wrap">
+            <!-- <h2 class="h2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </h2> -->
+            <lottie-player
+              src="https://lottie.host/dff3247f-d3cf-4a87-ad4d-147d730f32fa/0CgsrXyafT.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+            <lottie-player
+              src="https://lottie.host/06d3eeb1-44b6-4a5b-ab0b-944040982650/rvuZED4m8h.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+
+            <lottie-player
+              src="https://lottie.host/e3ec82f4-b5ef-42b1-805d-7ad3fc87c228/2RglI9zzCv.json"
+              speed="1"
+              class="select lotplay"
+            ></lottie-player>
+
+
+            <lottie-player
+              src="https://lottie.host/f015b6dd-c669-4f47-90bc-f726cd62300b/30dpWc50rw.json"
+              speed="1.8"
+              class="select lotplay"
+            ></lottie-player>
+
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      let selects = document.querySelectorAll(".select");
+      const option = {
+        /*
+            L'élément qui est utilisé comme zone d'affichage au moment d'évaluer la visibilité de la cible. 
+            Il doit être un ancêtre de la cible. S'il n'est pas spécifié ou s'il prend la valeur null, 
+            sa valeur par défaut est la zone d'affichage (le viewport) du navigateur. C'est le cas ici */
+        root: null,
+        /*
+            Cet ensemble de valeur sert à agrandir ou à réduire chaque coté du cadre délimitant l'élément racine avant 
+            d'évaluer les intersections.
+            */
+        rootMargin: "0px 0px 0px 0px",
+        /*
+                Le degré d'intersection entre l'élément cible et sa racine est le ratio d'intersection. 
+                C'est une représentation du pourcentage de l'élément cible qui est visible, exprimée sous 
+                la forme d'un nombre compris entre 0.0 et 1.0.
+            */
+        threshold: 0.7,
+      };
+
+      /*
+            Création d'un observer
+            const observer = new IntersectionObserver (callback, option)
+        */
+
+      const observer = new IntersectionObserver(function (entries, observer) {
+        /*
+            Chaque élément de entries correspond à une variation
+            d'intersection pour un des éléments cible
+        */
+        entries.forEach((entry) => {
+          console.log(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            // entry.target est l'élément cible
+            entry.target.play();
+          } else {
+            //entry.target.classList.remove("select--active");
+          }
+          // if (entry.isIntersecting) {
+          //   // suprime la classe si il y a une intersection entre le viewport et la secion--one
+          // } else {
+          //   // Ajoute la classe si il y a une intersection entre le viewport et la secion--one
+          // }
+        });
+      }, option);
+
+      // On lance l'observation
+
+      selects.forEach((select) => {
+        observer.observe(select);
+      });
+    </script>
+
+    <div class="bg-bluebg w-screen [transform:rotateY(180deg)] p-0 m-0">
+      <!-- div à modifier si besoin -->
+      <div class="bg-redbg w-screen h-20"></div>
+      <!-- fin de la div à modifier si besoin -->
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-redbg rotat"></path>
+      </svg>
+      <!-- div à modifier si besoin -->
+      <div class="bg-bluebg w-screen h-20"></div>
+    </div>
+
+    <section class="relative bg-bluebg p-0 m-0 flex flex-col justify-center items-center">
+
+      <p class="p-0 md:text-3xl text-xs font-bold ">Pensez &agrave; notre plan&egrave;te et voyagez propre !</p>
+
+      <lottie-player
+        src="https://lottie.host/c368442e-3810-4b03-a900-f0bcfa64386d/hm4GojYkgK.json"
+        background="#9DD8F7"
+        speed="1"
+        loop
+        autoplay
+        class="w-screen"
+      ></lottie-player>
+    <div class="absolute bottom-8 flex items-center">
+	<p class="p-4 md:text-3xl text-xs font-bold ">Site en partenariat avec</p><img class="w-24" src="../assets/Logo-ADEME.png"/>
+    </div>
+
+    </section>
+  </body>
+</html>
